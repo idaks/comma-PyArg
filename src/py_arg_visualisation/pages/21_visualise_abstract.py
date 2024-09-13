@@ -187,11 +187,12 @@ right_column = dbc.Col([
                 ]),
                 dcc.Tab(label='Layered visualisation', children=[
                     html.Div(style={'height': '5px'}),
+
                     dbc.Row([
                         dbc.Col(
                             [
                                 dbc.Row([
-                                    dbc.Col(html.B('Layout'), width=5),
+                                    dbc.Col(html.B('Layout Direction'), width=5),
                                     dbc.Col(
                                         dbc.Select(
                                             options=[
@@ -207,13 +208,13 @@ right_column = dbc.Col([
                                 ]),
                                 html.Div(style={'height': '5px'}),
                                 dbc.Row([
-                                    dbc.Col(html.B('Rank'), width=5),
+                                    dbc.Col(html.B('Layer By'), width=5),
                                     dbc.Col(
                                         dbc.Select(
                                             options=[
-                                                {'label': 'No Rank', 'value': 'NR'},
-                                                {'label': 'Min Rank', 'value': 'MR'},
-                                                {'label': 'All Rank', 'value': 'AR'},
+                                                {'label': 'Attacks', 'value': 'NR'},
+                                                {'label': 'Source Arguments', 'value': 'MR'},
+                                                {'label': 'Length of Arguments', 'value': 'AR'},
                                             ],
                                             value='NR',
                                             id='21-abstract-graph-rank',
@@ -222,7 +223,7 @@ right_column = dbc.Col([
                                 ]),
                                 html.Div(style={'height': '5px'}),
                                 dbc.Row([
-                                    dbc.Col(html.B('Edge Constraint (False)'), width=5),
+                                    dbc.Col(html.B('De-emphasize in Layering'), width=5),
                                     dbc.Col(
                                         dcc.Dropdown(
                                             options=[
@@ -239,7 +240,7 @@ right_column = dbc.Col([
                                 ]),
                                 html.Div(style={'height': '5px'}),
                                 dbc.Row([
-                                    dbc.Col(html.B('Remove Edges'), width=5),
+                                    dbc.Col(html.B('Hide Attacks By Type'), width=5),
                                     dbc.Col(
                                         dcc.Dropdown(
                                             options=[

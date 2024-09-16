@@ -30,8 +30,8 @@ def generate_dot_string(
         color_blind_mode=False, 
         layout=any, 
         rank=any,
-        dot_con=any,
-        dot_rm_edge=any):
+        dot_blund=any,
+        dot_rederivation=any):
     gr_status_by_arg, number_by_argument = get_numbered_grounded_extension(
         argumentation_framework)
     dot_string = "digraph {\n"
@@ -143,34 +143,29 @@ def generate_dot_string(
                 elif from_argument_extension_state == 'undefined' and \
                         to_argument_extension_state == 'undefined':
                     full_color = get_color('dark-yellow', color_blind_mode)
-                    style = set_style("UU", style, dot_rm_edge)
-                    constraint_value = set_con("UU", dot_con)
                 # Undefined -> Defeated
                 elif from_argument_extension_state == 'undefined' and \
                         to_argument_extension_state == 'defeated':
                     full_color = get_color('gray', color_blind_mode)
                     style = 'dotted'
-                    style = set_style("UD", style, dot_rm_edge)
                     arrow_style = 'onormal'
-                    constraint_value= set_con("UD", dot_con)
+                    constraint_value= set_con(dot_blund)
                     label = ''
                 # Defeated -> Undefined
                 elif from_argument_extension_state == 'defeated' and \
                         to_argument_extension_state == 'undefined':
                     full_color = get_color('gray', color_blind_mode)
                     style = 'dotted'
-                    style = set_style("DU", style, dot_rm_edge)
                     arrow_style = 'onormal'
-                    constraint_value = set_con("DU", dot_con)
+                    constraint_value = set_con(dot_blund)
                     label = ''
                 # Defeated -> Defeated
                 elif from_argument_extension_state == 'defeated' and \
                     from_argument_extension_state == 'defeated':
                     full_color = get_color('gray', color_blind_mode)
                     style = 'dotted'
-                    style = set_style("DD", style, dot_rm_edge)
                     arrow_style = 'onormal'
-                    constraint_value = set_con("DD", dot_con)
+                    constraint_value = set_con(dot_blund)
                     label = ''
 
             if against_wind:
@@ -180,7 +175,7 @@ def generate_dot_string(
                     pass
                 else:
                     style = 'dashed'
-                style = set_style("AW", style, dot_rm_edge)
+                constraint_value = set_con(dot_rederivation)
                 edge = f'"{attack.to_argument.name}" -> ' \
                     f'"{attack.from_argument.name}" ' \
                     f'[dir=back ' \
@@ -272,8 +267,8 @@ def set_style(keyword, style, rm_edge):
     else:
         return style
 
-def set_con(keyword, rm_edge):
-    if rm_edge!= None and keyword in rm_edge:
+def set_con(bool):
+    if bool=="N":
         return 'constraint="false"'
     else:
         return ''

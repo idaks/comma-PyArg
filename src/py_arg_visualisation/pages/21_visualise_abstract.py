@@ -230,6 +230,7 @@ right_column = dbc.Col([
                                                 {'label': 'Use Blunders', 'value': 'BU'},
                                                 {'label': 'Use Re-Derivations', 'value': 'RD'},
                                             ],
+                                            value=['BU', 'RD'],
                                             inline=True,
                                             id='21-abstract-graph-special-handling',
                                         ),
@@ -241,7 +242,7 @@ right_column = dbc.Col([
                         dbc.Col(
                             [
                                 dbc.Button(
-                                    'Download dot', 
+                                    'Download DOT file', 
                                     id='21-dot-download-button',
                                     style={
                                         'width': '95px',
@@ -365,7 +366,7 @@ def create_abstract_argumentation_framework(
     
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     if "21-dot-download-button" in changed_id:
-        return dict(content=dot_source, filename="pyarg_output.dot"), data, dot_source
+        return dict(content=dot_source, filename="pyarg_output.gv"), data, dot_source
     else:
         return None, data, dot_source
 

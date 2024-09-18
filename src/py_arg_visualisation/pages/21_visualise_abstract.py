@@ -223,7 +223,7 @@ right_column = dbc.Col([
                                 ]),
                                 html.Div(style={'height': '5px'}),
                                 dbc.Row([
-                                    dbc.Col(html.B('Special Handing'), width=5),
+                                    dbc.Col(html.B('Special Handling'), width=5),
                                     dbc.Col(
                                         dbc.Checklist(
                                             options=[

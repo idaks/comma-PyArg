@@ -223,31 +223,15 @@ right_column = dbc.Col([
                                 ]),
                                 html.Div(style={'height': '5px'}),
                                 dbc.Row([
-                                    dbc.Col(html.B('Use “Blunders” in Layout'), width=7),
+                                    dbc.Col(html.B('Special Handing'), width=5),
                                     dbc.Col(
-                                        dbc.RadioItems(
+                                        dbc.Checklist(
                                             options=[
-                                                {'label': 'Yes', 'value': 'Y'},
-                                                {'label': 'No', 'value': 'N'},
+                                                {'label': 'Use Blunders', 'value': 'BU'},
+                                                {'label': 'Use Re-Derivations', 'value': 'RD'},
                                             ],
                                             inline=True,
-                                            value='N',
-                                            id='21-abstract-graph-blunders',
-                                        ),
-                                    ),
-                                ]),
-                                html.Div(style={'height': '5px'}),
-                                dbc.Row([
-                                    dbc.Col(html.B('Use “Re-Derivations” in Layout'), width=7),
-                                    dbc.Col(
-                                        dbc.RadioItems(
-                                            options=[
-                                                {'label': 'Yes', 'value': 'Y'},
-                                                {'label': 'No', 'value': 'N'},
-                                            ],
-                                            inline=True,
-                                            value='N',
-                                            id='21-abstract-graph-rederivations',
+                                            id='21-abstract-graph-special-handling',
                                         ),
                                     ),
                                 ]),
@@ -351,19 +335,16 @@ def generate_abstract_argumentation_framework(
     Input('color-blind-mode', 'on'),
     Input('21-abstract-graph-layout', 'value'),
     Input('21-abstract-graph-rank', 'value'),
-    Input('21-abstract-graph-blunders', 'value'),
-    Input('21-abstract-graph-rederivations', 'value'),
+    Input('21-abstract-graph-special-handling', 'value'),
     Input('abstract-evaluation-accordion', 'active_item'),
     prevent_initial_call=True
 )
 def create_abstract_argumentation_framework(
         _nr_clicks: int, arguments: str, attacks: str, selected_arguments: Dict[str, List[str]],
-        color_blind_mode: bool, dot_layout: str, dot_rank:str, dot_blund:List[str], 
-        dot_rederivation: List[str], active_item: str):
+        color_blind_mode: bool, dot_layout: str, dot_rank:str, special_handling:List[str], active_item: str):
     """
     Send the AF data to the graph for plotting.
     """
-
     # Read the argumentation framework; in case of an error, display nothing.
     try:
         arg_framework = read_argumentation_framework(arguments, attacks)
@@ -378,7 +359,7 @@ def create_abstract_argumentation_framework(
         arg_framework, selected_arguments, color_blind_mode)
     if selected_arguments:
         dot_source = generate_dot_string(
-            arg_framework, selected_arguments, color_blind_mode, dot_layout, dot_rank, dot_blund, dot_rederivation)
+            arg_framework, selected_arguments, color_blind_mode, dot_layout, dot_rank, special_handling)
     else:
         dot_source = generate_plain_dot_string(arg_framework, dot_layout)
     

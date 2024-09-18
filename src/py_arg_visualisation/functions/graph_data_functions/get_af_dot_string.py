@@ -30,8 +30,7 @@ def generate_dot_string(
         color_blind_mode=False, 
         layout=any, 
         rank=any,
-        dot_blund=any,
-        dot_rederivation=any):
+        special_handling=any):
     gr_status_by_arg, number_by_argument = get_numbered_grounded_extension(
         argumentation_framework)
     dot_string = "digraph {\n"
@@ -149,7 +148,7 @@ def generate_dot_string(
                     full_color = get_color('gray', color_blind_mode)
                     style = 'dotted'
                     arrow_style = 'onormal'
-                    constraint_value= set_con(dot_blund)
+                    constraint_value= set_constraint_con(special_handling, "BU")
                     label = ''
                 # Defeated -> Undefined
                 elif from_argument_extension_state == 'defeated' and \
@@ -157,7 +156,7 @@ def generate_dot_string(
                     full_color = get_color('gray', color_blind_mode)
                     style = 'dotted'
                     arrow_style = 'onormal'
-                    constraint_value = set_con(dot_blund)
+                    constraint_value = set_constraint_con(special_handling, "BU")
                     label = ''
                 # Defeated -> Defeated
                 elif from_argument_extension_state == 'defeated' and \
@@ -165,7 +164,7 @@ def generate_dot_string(
                     full_color = get_color('gray', color_blind_mode)
                     style = 'dotted'
                     arrow_style = 'onormal'
-                    constraint_value = set_con(dot_blund)
+                    constraint_value = set_constraint_con(special_handling, "BU")
                     label = ''
 
             if against_wind:
@@ -175,7 +174,7 @@ def generate_dot_string(
                     pass
                 else:
                     style = 'dashed'
-                constraint_value = set_con(dot_rederivation)
+                constraint_value = set_constraint_con(special_handling, "RD")
                 edge = f'"{attack.to_argument.name}" -> ' \
                     f'"{attack.from_argument.name}" ' \
                     f'[dir=back ' \
@@ -206,14 +205,18 @@ def generate_dot_string(
     if rank=="NR":
         pass
     elif rank=="AR":
-        max_value = max(number_by_argument.values())
-        # Create a new dictionary excluding nodes with the maximum value
-        filtered_arguments = {k: v for k, v in number_by_argument.items() if v != max_value}
+        # in case we need the rank = max
+        # max_value = max(number_by_argument.values())
+        filtered_arguments = {k: v for k, v in number_by_argument.items()}
         nodes_by_value = defaultdict(list)
         for node, value in filtered_arguments.items():
             nodes_by_value[value].append(node)
-        for value, nodes in nodes_by_value.items():
-            same_rank_string = f"{{rank = same {' '.join(nodes)}}}"
+        for value in sorted(nodes_by_value.keys()):
+            nodes = nodes_by_value[value]
+            if len(nodes) == 1:
+                same_rank_string = f"// {{rank = same {' '.join(nodes)}}}"
+            else:
+                same_rank_string = f"{{rank = same {' '.join(nodes)}}}"
             dot_string += f"    {same_rank_string}\n"
     elif rank=="MR":
         min_state_nodes = [node for node, value in number_by_argument.items() if value == min(number_by_argument.values())]
@@ -267,8 +270,12 @@ def set_style(keyword, style, rm_edge):
     else:
         return style
 
-def set_con(bool):
-    if bool=="N":
+def set_constraint_con(bool, con_type):
+    if not bool:
+        return ''
+    if con_type == "BU" and "BU" not in bool:
+        return 'constraint="false"'
+    elif con_type == "RD" and "RD" not in bool:
         return 'constraint="false"'
     else:
         return ''

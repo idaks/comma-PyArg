@@ -187,8 +187,8 @@ right_column = dbc.Col([
                 ]),
                 dcc.Tab(label='Layered visualisation', children=[
                     html.Div(style={'height': '5px'}),
-
-                    dbc.Row([
+                    html.Div([
+                        dbc.Row([
                         dbc.Col(
                             [
                                 dbc.Row([
@@ -255,6 +255,8 @@ right_column = dbc.Col([
                             width=3,
                         ),
                     ]),
+                    ], id = "layered-vis-param", style = {'display': 'block'} ),
+                    
                     html.Div([
                         dash_interactive_graphviz.DashInteractiveGraphviz(
                             id='explanation-graph',
@@ -323,6 +325,16 @@ def generate_abstract_argumentation_framework(
                                             for defeat in opened_af.defeats))
         return abstract_arguments_value, abstract_attacks_value
     return '', ''
+
+@callback(
+   Output('layered-vis-param', 'style'),
+   Input('abstract-evaluation-accordion', 'active_item'))
+
+def show_hide_element(accordion_value):
+    if accordion_value == 'Evaluation':
+        return {'display': 'block'}
+    else: 
+        return {'display': 'none'}
 
 
 @callback(

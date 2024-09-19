@@ -272,7 +272,7 @@ def set_style(keyword, style, rm_edge):
 
 def set_constraint_con(bool, con_type):
     if not bool:
-        return ''
+        return 'constraint="false"'
     if con_type == "BU" and "BU" not in bool:
         return 'constraint="false"'
     elif con_type == "RD" and "RD" not in bool:

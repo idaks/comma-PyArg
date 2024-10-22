@@ -377,8 +377,16 @@ def create_abstract_argumentation_framework(
         dot_source = generate_plain_dot_string(arg_framework, dot_layout)
     
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+
+    rank_dict ={'NR':'Attacks', 'MR':'Unattacked Arguments','AR': 'Length of Arguments'}
+    settings  = "\n".join([line.lstrip() for line in f"""
+    // Input AF: {str(arg_framework)}
+    // Layer by: {rank_dict[dot_rank]}
+    // Use Blunders: {"Yes" if "BU" in special_handling else "No"}
+    // Use Re-Derivations: {"Yes" if "RD" in special_handling else "No"}
+    """.splitlines()])
     if "21-dot-download-button" in changed_id:
-        return dict(content=dot_source, filename="pyarg_output.gv"), data, dot_source
+        return dict(content=settings+dot_source, filename="pyarg_output.gv"), data, dot_source
     else:
         return None, data, dot_source
 

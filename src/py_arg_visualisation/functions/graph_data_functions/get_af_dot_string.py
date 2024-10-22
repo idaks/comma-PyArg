@@ -113,6 +113,7 @@ def generate_dot_string(
             style = 'solid'
             arrow_style = 'vee'
             constraint_value = ''
+            full_color = get_color('black', color_blind_mode)
             # handle grounded extensions
             # Accepted -> Defeated
             if from_argument_grounded_state == 'accepted' and \

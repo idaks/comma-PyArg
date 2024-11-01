@@ -1,0 +1,14 @@
+We recommend you use conda (Conda Installation) to help manage all packages
+
+You first need to clone the repo and switch to layered_vis branch
+
+git clone https://github.com/idaks/comma-PyArg
+cd comma-PyArg
+git checkout layered_vis
+Within the pyarg folder, you can run the following scripts to set up the environment
+
+conda create -n pyarg python=3.11
+conda activate pyarg
+pip install -r requirements.txt
+pip install -e .
+python wsgi.py
